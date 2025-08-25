@@ -7,6 +7,7 @@ import SkillBadge from './components/SkillBadge';
 import DiscordProfile from './components/DiscordProfile';
 import { useGitHub } from './hooks/useGitHub';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
+import { getLanguageColor } from './utils/languageColors';
 
 function AppContent() {
   const DISCORD_ID = '896514062714822696';
@@ -216,7 +217,13 @@ function AppContent() {
                       
                       <div className="flex flex-wrap gap-1 mb-2">
                         {repo.language && (
-                          <span className="px-1.5 py-0.5 bg-dark-600/70 text-accent-400 rounded text-[9px] border border-dark-500">
+                          <span 
+                            className="px-1.5 py-0.5 rounded text-[9px] border border-dark-500 text-white font-medium"
+                            style={{ 
+                              backgroundColor: getLanguageColor(repo.language),
+                              borderColor: getLanguageColor(repo.language)
+                            }}
+                          >
                             {repo.language}
                           </span>
                         )}
@@ -231,7 +238,10 @@ function AppContent() {
                         <div className="flex items-center gap-3">
                           {repo.language && (
                             <div className="flex items-center gap-1">
-                              <div className="w-2 h-2 rounded-full bg-yellow-400"></div>
+                              <div 
+                                className="w-2 h-2 rounded-full"
+                                style={{ backgroundColor: getLanguageColor(repo.language) }}
+                              ></div>
                               <span>{repo.language}</span>
                             </div>
                           )}
