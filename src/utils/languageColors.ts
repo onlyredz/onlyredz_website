@@ -489,3 +489,70 @@ export const languageColors: { [key: string]: string } = {
 export const getLanguageColor = (language: string): string => {
   return languageColors[language] || '#6e7781'; // Default GitHub gray
 };
+
+// Common programming languages that might appear in repository topics
+export const commonLanguages = [
+  'TypeScript', 'JavaScript', 'HTML', 'CSS', 'Python', 'Java', 'C#', 'C++', 'C',
+  'PHP', 'Ruby', 'Go', 'Rust', 'Swift', 'Kotlin', 'Scala', 'R', 'MATLAB', 'Shell',
+  'PowerShell', 'Lua', 'Dart', 'Elixir', 'Clojure', 'Haskell', 'OCaml', 'F#',
+  'Assembly', 'Vue', 'React', 'Angular', 'Svelte', 'Next.js', 'Nuxt.js', 'Vite',
+  'Webpack', 'Babel', 'ESLint', 'Prettier', 'Jest', 'Cypress', 'Storybook',
+  'Tailwind CSS', 'Bootstrap', 'Material-UI', 'Ant Design', 'Chakra UI',
+  'Styled Components', 'Sass', 'Less', 'PostCSS', 'GraphQL', 'Apollo', 'Prisma',
+  'MongoDB', 'PostgreSQL', 'MySQL', 'SQLite', 'Redis', 'Docker', 'Kubernetes',
+  'AWS', 'Azure', 'Google Cloud', 'Firebase', 'Vercel', 'Netlify', 'Heroku',
+  'DigitalOcean', 'GitHub Actions', 'Travis CI', 'CircleCI', 'Jenkins',
+  'GitLab CI', 'Bitbucket Pipelines', 'npm', 'Yarn', 'pnpm', 'Lerna', 'Rush',
+  'Nx', 'Turborepo', 'Monorepo', 'Microservices', 'Serverless', 'JAMstack',
+  'PWA', 'SPA', 'SSR', 'SSG', 'API', 'REST', 'gRPC', 'WebSocket', 'WebRTC',
+  'Electron', 'Tauri', 'React Native', 'Flutter', 'Ionic', 'Cordova', 'Capacitor',
+  'Unity', 'Unreal Engine', 'Godot', 'Blender', 'Three.js', 'WebGL', 'Canvas',
+  'SVG', 'Web Audio', 'Web Workers', 'Service Workers', 'IndexedDB', 'LocalStorage',
+  'SessionStorage', 'Cookies', 'JWT', 'OAuth', 'OpenID Connect', 'SAML', 'LDAP',
+  'Active Directory', 'OAuth 2.0', 'OIDC', 'SAML 2.0', 'SCIM', 'MFA', '2FA',
+  'TOTP', 'HOTP', 'U2F', 'WebAuthn', 'FIDO2', 'Biometric', 'Face ID', 'Touch ID',
+  'Fingerprint', 'Iris', 'Voice', 'Behavioral', 'Risk-based', 'Adaptive',
+  'Contextual', 'Zero Trust', 'Zero Knowledge', 'End-to-End', 'Client-Side',
+  'Server-Side', 'Edge', 'Cloud', 'Hybrid', 'Multi-Cloud', 'Polyglot',
+  'Micro-Frontends', 'Module Federation', 'Web Components', 'Custom Elements',
+  'Shadow DOM', 'HTML Templates', 'Progressive Enhancement', 'Graceful Degradation',
+  'Feature Detection', 'Polyfills', 'Shims', 'Fallbacks', 'Graceful Fallbacks',
+  'Elegant Degradation', 'Responsive Design', 'Mobile First', 'Desktop First',
+  'Adaptive Design', 'Fluid Design', 'Elastic Design', 'Liquid Design',
+  'Fixed Design', 'Hybrid Design', 'Atomic Design', 'Design Systems',
+  'Component Libraries', 'UI Kits', 'Design Tokens', 'Style Guides',
+  'Brand Guidelines', 'Visual Identity', 'Brand Identity', 'Corporate Identity',
+  'Brand Strategy', 'Brand Positioning', 'Brand Architecture', 'Brand Portfolio',
+  'Brand Extension', 'Brand Dilution', 'Brand Equity', 'Brand Value',
+  'Brand Recognition', 'Brand Recall', 'Brand Awareness', 'Brand Loyalty',
+  'Brand Trust', 'Brand Reputation', 'Brand Image', 'Brand Personality',
+  'Brand Voice', 'Brand Tone', 'Brand Messaging', 'Brand Communication',
+  'Brand Marketing', 'Brand Advertising', 'Brand Promotion', 'Brand Publicity',
+  'Brand PR', 'Brand Media', 'Brand Content', 'Brand Storytelling',
+  'Brand Narrative', 'Brand Story', 'Brand Journey', 'Brand Experience',
+  'Brand Touchpoints', 'Brand Interactions', 'Brand Engagement', 'Brand Activation',
+  'Brand Events', 'Brand Sponsorships', 'Brand Partnerships', 'Brand Collaborations',
+  'Brand Co-branding', 'Brand Franchising', 'Brand Expansion', 'Brand Growth',
+  'Brand Development', 'Brand Evolution', 'Brand Transformation', 'Brand Rebranding',
+  'Brand Refresh', 'Brand Update', 'Brand Modernization', 'Brand Innovation',
+  'Brand Disruption', 'Brand Revolution'
+];
+
+// Extract languages from repository topics and primary language
+export const extractLanguagesFromRepo = (repo: { language: string | null; topics: string[] }): string[] => {
+  const languages = new Set<string>();
+  
+  // Add primary language if it exists
+  if (repo.language) {
+    languages.add(repo.language);
+  }
+  
+  // Add languages from topics
+  repo.topics.forEach(topic => {
+    if (commonLanguages.includes(topic)) {
+      languages.add(topic);
+    }
+  });
+  
+  return Array.from(languages);
+};

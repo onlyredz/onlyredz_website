@@ -7,7 +7,7 @@ import SkillBadge from './components/SkillBadge';
 import DiscordProfile from './components/DiscordProfile';
 import { useGitHub } from './hooks/useGitHub';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
-import { getLanguageColor } from './utils/languageColors';
+import { getLanguageColor, extractLanguagesFromRepo } from './utils/languageColors';
 
 function AppContent() {
   const DISCORD_ID = '896514062714822696';
@@ -216,35 +216,52 @@ function AppContent() {
                       </p>
                       
                       <div className="flex flex-wrap gap-1 mb-2">
-                        {repo.language && (
-                          <span 
-                            className="px-1.5 py-0.5 rounded text-[9px] border border-dark-500 text-white font-medium"
-                            style={{ 
-                              backgroundColor: getLanguageColor(repo.language),
-                              borderColor: getLanguageColor(repo.language)
-                            }}
-                          >
-                            {repo.language}
-                          </span>
-                        )}
-                        {repo.topics?.slice(0, 3).map((topic) => (
-                          <span key={topic} className="px-1.5 py-0.5 bg-dark-600/70 text-accent-400 rounded text-[9px] border border-dark-500">
-                            {topic}
-                          </span>
-                        ))}
+                        {(() => {
+                          const languages = extractLanguagesFromRepo(repo);
+                          return languages.slice(0, 3).map((lang) => (
+                            <span key={lang} className="px-1.5 py-0.5 bg-dark-600/70 text-accent-400 rounded text-[9px] border border-dark-500">
+                              {lang}
+                            </span>
+                          ));
+                        })()}
+                        {repo.topics?.slice(0, 2).map((topic) => {
+                          const languages = extractLanguagesFromRepo(repo);
+                          // Only show topics that are not already shown as languages
+                          if (!languages.includes(topic)) {
+                            return (
+                              <span key={topic} className="px-1.5 py-0.5 bg-dark-600/70 text-accent-400 rounded text-[9px] border border-dark-500">
+                                {topic}
+                              </span>
+                            );
+                          }
+                          return null;
+                        })}
                       </div>
                       
                       <div className="flex items-center justify-between text-[10px] text-gray-400 pt-1.5 border-t border-dark-600">
                         <div className="flex items-center gap-3">
-                          {repo.language && (
-                            <div className="flex items-center gap-1">
-                              <div 
-                                className="w-2 h-2 rounded-full"
-                                style={{ backgroundColor: getLanguageColor(repo.language) }}
-                              ></div>
-                              <span>{repo.language}</span>
-                            </div>
-                          )}
+                          {(() => {
+                            const languages = extractLanguagesFromRepo(repo);
+                            return languages.length > 0 ? (
+                              <div className="flex items-center gap-1">
+                                {languages.slice(0, 3).map((lang, index) => (
+                                  <div key={lang} className="flex items-center gap-1">
+                                    <div 
+                                      className="w-2 h-2 rounded-full"
+                                      style={{ backgroundColor: getLanguageColor(lang) }}
+                                    ></div>
+                                    <span className="text-[10px]">{lang}</span>
+                                    {index < Math.min(languages.length, 3) - 1 && (
+                                      <span className="text-gray-500 mx-1">•</span>
+                                    )}
+                                  </div>
+                                ))}
+                                {languages.length > 3 && (
+                                  <span className="text-[10px] text-gray-500">+{languages.length - 3}</span>
+                                )}
+                              </div>
+                            ) : null;
+                          })()}
                           <div className="flex items-center gap-1">
                             <Star size={10} className="text-gray-400" />
                             <span>{repo.stargazers_count}</span>
